@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+export OMP_NUM_THREADS=1
+
+# module load CUDA/12.4.0 OpenMPI/5.0.3-GCC-13.3.0 FFTW.MPI/3.3.10-gompi-2023d PnetCDF/1.12.3-gompi-2023d HDF5/1.14.0-gompi-2023d mpi4py/3.1.5-gompi-2023d GDB/14.2-GCCcore-13.3.0
+
+# module --force purge
+# module load Stages/2024 GCC/12.3.0 OpenMPI/4.1.5 FFTW/3.3.10 FFTW.MPI/3.3.10 PnetCDF/1.12.3 Boost.Python/1.82.0
+
+ranks=24
+
+RE=200
+TIMESTEPS=11750
+
+MAIA_ENV="cylinder"
+
+COPY_PROP_FILES=false
+COPY_CKPT_FILES=false
+RUN_INIT=false
+RUN_PREP_ENV=false
+RUN_RESTART=true
+PLOT_FORCES=true
+
+###############################
+###
+
+rm out_lb/PV* force.l*
+
+if [[ "$COPY_PROP_FILES" == "true" ]]; then
+    cp ${DEFAULT_FILES}/{geometry.toml,properties_grid.toml,properties_run_init.toml,properties_run.toml} .
+    cp -r ${DEFAULT_FILES}/stl .
+fi
+
+if [[ "$COPY_CKPT_FILES" == "true" ]]; then
+    rm out_lb/{grid.Netcdf,restart*}
+    cp ${DEFAULT_FILES}/{grid.Netcdf,restart_.Netcdf} out_lb/ # Double check restart_.Netcdf filename
+else
+    orterun -np 1 ./shared/maia_cpu properties_grid.toml
+    # mpirun -np 1 ./shared/maia_cpu properties_grid.toml --silent # Consider removing if not used
+fi
+
+if [[ "$RUN_INIT" == "true" ]]; then
+    echo "--- Starting init run ---"
+    # orterun -np ${ranks} ./shared/maia_cpu properties_run_init.toml
+    BC_value=1000
+    awk -i inplace -v new_value=${BC_value} '$1 == "BC.0" { $3 = new_value } 1' geometry.toml
+    SECONDS=0
+    mpirun -np ${ranks} ./shared/maia_cpu properties_run_init.toml # Consider removing if not used
+    echo $SECONDS
+    cp out_lb/restart_.Netcdf out_lb/backup_40Deg.Netcdf
+fi
+
+if [[ "$RUN_PREP_ENV" == "true" ]]; then
+    cp out_lb/backup_40Deg.Netcdf out_lb/restart_.Netcdf
+    echo "--- Starting run with control ---"
+    BC_value=1005
+    awk -i inplace -v new_value=${BC_value} '$1 == "BC.0" { $3 = new_value } 1' geometry.toml
+    awk -i inplace -v new_value=${TIMESTEPS} '$1 == "timeSteps" { $3 = new_value } 1' properties_run_restart.toml
+    # orterun -np ${ranks} ./shared/maia_cpu properties_run.toml
+    SECONDS=0
+    mpirun -np ${ranks} ./shared/maia_cpu properties_run_restart.toml # Consider removing if not used
+    echo $SECONDS
+    cp out_lb/restart_.Netcdf out_lb/restart_40Deg.Netcdf
+fi
+
+if [[ "$RUN_RESTART" == "true" ]]; then
+    TIMESTEPS=10000
+    cp out_lb/restart_40Deg.Netcdf out_lb/restart_.Netcdf
+    echo "--- Starting run with control ---"
+    BC_value=1000
+    awk -i inplace -v new_value=${BC_value} '$1 == "BC.0" { $3 = new_value } 1' geometry.toml
+    awk -i inplace -v new_value=${TIMESTEPS} '$1 == "timeSteps" { $3 = new_value } 1' properties_run.toml
+    # orterun -np ${ranks} ./shared/maia_cpu properties_run.toml
+    SECONDS=0
+    mpirun -np ${ranks} ./shared/maia_cpu properties_run.toml # Consider removing if not used
+    echo $SECONDS
+fi
+
+if [[ "$PLOT_FORCES" == "true" ]]; then
+    echo "--- Plotting forces ---"
+    python plot_force_data.py
+fi

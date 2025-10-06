@@ -1,0 +1,43 @@
+# -------------- CANARY -----------------------------
+noDomains                    = 1 # only needed for test cases
+# -------------- APPLICATION SETTINGS  --------------
+flowSolver                   = false
+gridGenerator                = true
+scratchSize                  = 20.0
+noSolvers                    = 1
+multiSolverGrid              = false
+
+# -------------- APPLICATION ENVIRONMENT  --------------
+outputDir                    = "./out_lb/"
+geometryInputFileName        = "geometry.toml"
+gridInputFileName            = "grid.Netcdf"
+gridOutputFileName           = "grid.Netcdf"
+
+# -------------- SPATIAL DISCRETIZATION --------------
+nDim                         = 2
+
+# -------------- GRID AND REFINEMENT PROPERTIES --------------
+maxNoCells                   = 8500000
+partitionCellOffspringThreshold = 500000
+minLevel                     = 10
+maxUniformRefinementLevel    = 10
+maxRfnmntLvl                 = 10
+maxBoundaryRfnLvl            = 10
+
+localRfnMethod               = 0        # 0 no, 1 patch only, 2 boundary only, 3 both
+localRfnLvlMethods           = "B-B" #"B-B-B-B"
+localRfnLevelProperties      = [0.0, -20.0, 90.0, 3.0] 
+#                                12.0, -4.0, 90.0, 2.0]
+# 			     -3.0,  -7.5, 40.0,  7.5,
+#			     -1.5,  -6.5, 35.0,  6.5]
+#			     -1.0, -5.25,  30.0, 5.25]
+
+#-boundary refinment
+localBndRfnMethod                 = 1         # 0: default (level0), 1: based on local 2: based on localBndRfnDistance
+localBndRfnDistance               = 1.5       # d_bndry/D= 5/sqrt(Re)
+localBndRfnMinLvlDiff             = [3]       # difference between maxBoundaryRfnLvl and lowest target refinment level
+
+localRfnBoundaryIds               = [5]       # Ids of boundaries that are refined
+localRfnLvlDiff                   = [0]       # difference between maxBoundaryRfnLvl and bndry-Id
+smoothDistance                    = [10]      # number of cells used at least
+localMinBoundaryThreshold         = [10]      # 

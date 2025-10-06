@@ -1,0 +1,16 @@
+noSegments       = 5
+inOutSegmentsIds = [0,1,2,3]
+
+filename.0 = "stl/negX.stl"
+filename.1 = "stl/posX.stl"
+filename.2 = "stl/negY.stl"
+filename.3 = "stl/posY.stl"
+filename.4 = "stl/naca-0012_AoA-40deg_chord-8.0.stl"
+
+"body_segments.boundary" = [0,1,2,3,4]
+
+BC.0 = 1000
+BC.1 = 4000
+BC.2 = 4000
+BC.3 = 4000
+BC.4 = 2007

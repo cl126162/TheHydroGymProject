@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroGym - RL Platform for Fluid Dynamics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        :root {
+            --primary: #0066cc;
+            --secondary: #00a8e8;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff6b35;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('./logo.svg') no-repeat;
+            background-size: 120% auto;
+            background-position: 50% top;
+            background-color: #ffffff;
+            color: var(--dark);
+            padding: 40px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .hero h1 {
+            font-family: 'Kalam', cursive; /* Use Kalam font */
+            font-size: 10em;
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 2.5rem;
+            margin: 0 0 30px 0;
+            color: var(--dark);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.6);
+        }
+
+        /* Overview Figure */
+        .overview {
+            padding: 60px 20px;
+            background: var(--light);
+            text-align: center;
+        }
+
+        .overview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Backends Section */
+        .backends {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .backends h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+
+        .backend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .backend-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-top: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .backend-card:nth-child(1) {
+            border-top-color: #e74c3c;
+        }
+
+        .backend-card:nth-child(2) {
+            border-top-color: #f39c12;
+        }
+
+        .backend-card:nth-child(3) {
+            border-top-color: #9b59b6;
+        }
+
+        .backend-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+
+        .backend-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .backend-card .tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .backend-card p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .backend-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .backend-card ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #666;
+        }
+
+        .backend-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .repo-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .repo-link:hover {
+            background: var(--secondary);
+        }
+
+        /* Test Cases Section */
+        .test-cases {
+            padding: 80px 20px;
+            background: var(--light);
+        }
+
+        .test-cases h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+
+        .cases-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .case-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .case-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .case-card-content {
+            padding: 20px;
+        }
+
+        .case-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .case-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .backend-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>HydroGym</h1>
+            <p>A Reinforcement Learning Platform for Fluid Dynamics Control</p>
+            <p style="font-size: 2.0rem;">42+ Validated Environments | 3 Numerical Backends | Easy access</p>
+            <!-- <a href="https://github.com/dynamicslab/hydrogym" class="cta-button" target="_blank">View on GitHub</a> -->
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="overview">
+        <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: var(--dark);">Comprehensive Flow Control Suite</h2>
+        <p style="max-width: 800px; margin: 0 auto 40px; color: #555; font-size: 1.1rem;">
+            From canonical 2D cylinder flows to complex 3D turbulent scenarios, HydroGym provides standardized environments for systematic RL algorithm development and evaluation.
+        </p>
+        <!-- Add your overview figure here -->
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <img src="figure2_GitHub.svg" alt="HydroGym Environment Overview" style="width: 100%;">
+        </div>
+    </section>
+
+    <!-- Three Numerical Backends -->
+    <section class="backends">
+        <h2>Three Powerful Numerical Backends</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 40px; color: #666; font-size: 1.1rem;">
+            Choose the right solver for your research needs—from high-performance computing to gradient-enhanced optimization
+        </p>
+
+        <div class="backend-grid">
+            <!-- m-AIA Card -->
+            <div class="backend-card">
+                <h3>m-AIA</h3>
+                <span class="tag">Lattice Boltzmann Method</span>
+                <span class="tag">GPU</span>
+                <span class="tag">C++</span>
+                <p><strong>High-Performance CFD for Large-Scale Simulations</strong></p>
+                <p>Built on RWTH Aachen's m-AIA framework, this backend enables massive parallel simulations with efficient CPU/GPU acceleration.</p>
+                <ul>
+                    <li>2D & 3D turbulent flows at industrial scales covering a large range of Re numbers</li>
+                    <li>MPI + OpenMP parallelization</li>
+                    <li>Validated against DNS benchmarks</li>
+                    <li>Docker containers available</li>
+                </ul>
+                <a href="#" class="repo-link">Explore m-AIA Environments →</a>
+            </div>
+
+            <!-- JAX Card -->
+            <div class="backend-card">
+                <h3>JAX</h3>
+                <span class="tag">Differentiable Physics</span>
+                <span class="tag">GPU</span>
+                <span class="tag">JAX</span>
+                <p><strong>Gradient-Enhanced RL with Automatic Differentiation</strong></p>
+                <p>GPU-accelerated differentiable simulations enable gradient-based policy optimization, dramatically improving sample efficiency.</p>
+                <ul>
+                    <li>Automatic differentiation through flow environments</li>
+                    <li>2D Kolmogorov & 3D channel flows</li>
+                    <li>Fully vectorized with jit compilation</li>
+                    <li>30-50% faster convergence</li>
+
+                </ul>
+                <a href="#" class="repo-link">Explore JAX Environments →</a>
+            </div>
+
+            <!-- Firedrake Card -->
+            <div class="backend-card">
+                <h3>Firedrake</h3>
+                <span class="tag">Finite Element Method</span>
+                <span class="tag">CPU</span>
+                <span class="tag">Python</span>
+                <p><strong>Transparent, Extensible & Customizable  Python Framework</strong></p>
+                <p>Python-based finite element solver prioritizing code clarity and research extensibility with full access to solver internals.</p>
+                <ul>
+                    <li>Taylor-Hood mixed elements with semi-implicit timestepping</li>
+                    <li>Complete Python implementation</li>
+                    <li>Easy to modify and extend</li>
+                    <li>PETSc parallel linear algebra backend</li>
+                </ul>
+                <a href="#" class="repo-link">Explore Firedrake Environments →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Cases -->
+    <section class="test-cases">
+        <h2>Example Flow Control Scenarios</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 40px; color: #666; font-size: 1.1rem;">
+            Validated environments with systematic Reynolds number progressions
+        </p>
+
+        <div class="cases-grid">
+            <div class="case-card">
+                <img src="placeholder-cylinder.gif" alt="Cylinder Flow">
+                <div class="case-card-content">
+                    <h3>Circular Cylinder</h3>
+                    <p>2D & 3D flows at Re=100-3,900. Drag reduction via rotation and jet actuation. Achieves >90% drag reduction.</p>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <img src="pinball.gif" alt="Fluidic Pinball">
+                <div class="case-card-content">
+                    <h3>Fluidic Pinball</h3>
+                    <p>Multi-body wake interactions at Re=30-150. Coordinated control of three cylinders demonstrates chaos suppression.</p>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <img src="placeholder-cavity.gif" alt="Open Cavity">
+                <div class="case-card-content">
+                    <h3>Open Cavity Flow</h3>
+                    <p>Shear layer stabilization at Re=4,140-7,500. Acoustic feedback disruption through leading-edge control.</p>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <img src="naca.gif" alt="NACA Airfoil">
+                <div class="case-card-content">
+                    <h3>NACA 0012 Airfoil</h3>
+                    <p>Gust mitigation at Re=100-50,000. Transverse gust encounters with load alleviation strategies.</p>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <img src="placeholder-kolmogorov.gif" alt="Kolmogorov Flow">
+                <div class="case-card-content">
+                    <h3>Kolmogorov Flow (Differentiable)</h3>
+                    <p>Extreme event mitigation in 2D turbulence. Control energy bursts and enhance mixing efficiency.</p>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <img src="channel.gif" alt="Channel Flow">
+                <div class="case-card-content">
+                    <h3>Turbulent Channel (Differentiable)</h3>
+                    <p>Wall-shear stress reduction at Re_τ=180. Gradient-enhanced training with JAX for efficient optimization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>HydroGym</strong> - University of Washington & AI Institute in Dynamic Systems</p>
+        <p style="margin-top: 15px;">
+            <a href="https://github.com/dynamicslab/hydrogym" target="_blank">GitHub</a> | 
+            <a href="https://arxiv.org/abs/..." target="_blank">Paper</a> | 
+            <a href="https://hub.docker.com/r/lpaehler/hydrogym-devpod" target="_blank">Docker</a>
+        </p>
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+            © 2025 HydroGym Team. Open source under MIT License.
+        </p>
+    </footer>
+</body>
+</html>

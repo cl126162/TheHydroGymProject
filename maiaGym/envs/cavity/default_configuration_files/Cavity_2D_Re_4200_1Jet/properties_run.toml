@@ -1,0 +1,120 @@
+# -------------- APPLICATION SETTINGS  --------------
+gridGenerator                = false
+flowSolver                   = true
+restartFile.default          = true
+initRestart                  = false
+
+# -------------- MASSIVE PARALLEL  --------------
+lb                           = true
+partitionCellOffspringThreshold = 50000
+
+# -------------- APPLICATION ENVIRONMENT  --------------
+outputDir                    = "out_lb/"
+geometryInputFileName        = "geometry.toml"
+gridInputFileName            = "grid.Netcdf"
+useNonSpecifiedRestartFile   = true
+
+# -------------- SOLUTION PROPERTIES ----------------
+restartTimeStep              = 500000
+timeSteps                    = 1 #55000
+solutionInterval             = 5000000
+restartInterval              = 5000000 # Here, never
+residualInterval             = 2500000 # Here, never
+
+#---JET FORCING ON CYLINDER-----------------------------------------------------
+lbObjectClass                     = 1               # 0-> cylinder, 1-> flat plate, 2 ...
+lbNoJets                          = 1
+lbNoCylinder                      = 1
+lbBndCndIdx                       = [8]
+lbJetsPerCyl                      = [2]
+lbJetCenter                       = [23.5,0.0]      # Center of cylinder
+lbJetRadius                       = [0.0]           # Radius of cylinder - not required for flat-plate
+lbJetAngles                       = [1.5708]                   
+lbJetRanges                       = [0.5]           # jet thickness
+lbControlActions                  = [0.075]           # Here: [u1, v1, u2, v2]
+lbUseControlRamping               = true                  # Activate tanh ramping between two consecutive control actions
+lbRampPercentage                  = 0.3
+
+# -------------- NUMERICAL PROPERTIES --------------
+executionRecipe              = "RECIPE_BASE"
+noSolvers                    = 1
+multiSolverGrid              = false
+
+solvertype.0                 = "MAIA_LATTICE_BOLTZMANN"
+solverMethod.0               = "MAIA_LATTICE_BGK"          #siehe Testcases LB
+
+nDim                         = 2
+noDistributions              = 9
+
+interfaceMethod              = "FILIPPOVA"  # interpolation method for refined grids ("FILIPPOVA" or "ROHDE")
+multiBCTreatment             = "multiple"  # either "multiple", or order for distinct bc-assigment
+
+# ------------ FLOW INITIALIZATION -----------
+initMethod                   = "LB_FROM_ZERO_INIT"
+
+# -------------- FLOW VARIABLES --------------
+Ma                           = 0.1
+Re                           = 4140
+rho1                         = 0.98
+referenceLength              = 20.0  # Cylinder diameter
+lbControlInflow              = 0
+initVelocityMethod           = "read"
+initialVelocityVectors       = [
+                                1.0, 0.0, # inlet
+                                1.0, 0.0, # top
+                                1.0, 0.0, # outlet
+                                1.0, 0.0, # front horizonal plate
+                                ]
+externalForcing              = false
+
+# ----------- GEOMETRY SEGMENTATION ----------
+bndNormalMethod              = "read"
+bndNormalVectors             = [
+                                -1.0, 0.0, # inlet
+                                0.0, 1.0,  # top
+                                1.0, 0.0,  # outlet
+                                0.0, -1.0,  # front horizonal plate
+                                ]
+
+gridCutTest                  = "SAT"
+inOutTest                    = "perpOp"
+interpolationDistMethod      = "STD"  # analytic wall distance calculation
+
+#---GRID PROPERTIES-------------------------------------------------------------
+maxNoCells                        = 373520
+scratchSize                       = 20.0
+
+reductionFactor                   = 1.0            # initial cell length is multiplied with this factor
+
+maxRfnmntLvl                      = 10
+domainLength                      = 90.0 
+
+noHaloLayers                 = 2  # at least two on refined grids
+
+#---POST PROCESSING--------------------------------------------------------
+solvertype.1                      = "MAIA_POST_DATA"
+postProcessing                    = false
+noPostProcessing                  = 1
+postProcessingSolverIds           = [0]
+postProcessingType_0              = "POSTPROCESSING_LB"
+postProcessingOps_0               = ["PP_PROBE_POINT_IN"] # ["PP_AVERAGE_IN"]
+
+#--averaging
+pp_averageStartTimestep = 500000
+pp_averageStopTimestep = 600000
+pp_averageInterval = 500
+
+#averaging properties
+pp_useKahan = false
+pp_twoPass = false
+pp_square = false
+pp_skewness = false
+pp_kurtosis = false
+ 
+#perform line/slice probing on generated file containing means and statistical moments
+#pp_fileName = "out_lb/Mean_s1_00002005-00002050.Netcdf"
+
+#--point sampling
+pp_probePath                      = "probe/"
+pp_probeCoordinates               = [ -1.0, 0.0]
+pp_probeDerivatives               = true

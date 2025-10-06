@@ -1,0 +1,159 @@
+#-------------------------------------------------------------------------------
+#---GENERAL---------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+#---APPLICATION SETTINGS--------------------------------------------------------
+flowSolver                        = true
+gridGenerator                     = false
+restartFile.default               = true
+initRestart                       = false
+
+#---FLOW VARIABLES--------------------------------------------------------------
+referenceLength                   = 8.0  # Cylinder diameter
+Ma                                = 0.1
+Re                                = 100
+
+#---I/O-------------------------------------------------------------------------
+outputDir.default                 = "out_lb/"
+gridInputFileName                 = "grid.Netcdf"
+gridOutputFileName                = "grid.Netcdf"
+outputInitialCondition            = true #false
+
+#---BALANCING & WEIGHTING-------------------------------------------------------
+partitionCellOffspringThreshold   = 200000
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+nDim                              = 2
+noSolvers                         = 2
+multiSolverGrid                   = true
+
+executionRecipe                   = "RECIPE_BASE"
+solvertype.default                = "MAIA_UNIFIED"
+
+#---SOLUTION PROPERTIES---------------------------------------------------------
+restartTimeStep                   = 500000
+timeSteps = 11750 # for env testing: 17400
+solutionInterval                  = 50  # Here, means never
+restartInterval                   = 100000000  # Here, means never
+residualInterval                  = 640000000  # Here, means never
+
+#---JET FORCING ON CYLINDER-----------------------------------------------------
+lbObjectClass                     = 1               # 0-> cylinder, 1-> flat plate, 2 ...
+lbNoJets                          = 0
+lbNoCylinder                      = 1
+lbBndCndIdx                       = [4]
+lbJetsPerCyl                      = [3]
+lbJetCenter                       = [1.669,2.363, 0.994,2.531, 1.275,1.856]      # Center of cylinder
+lbJetRadius                       = [0.0, 0.0, 0.0]           # Radius of cylinder - not required for flat-plate
+lbJetAngles                       = [1.658, 2.443, 3.229]                   
+lbJetRanges                       = [0.4, 0.3, 0.4]           # jet thickness
+lbControlActions                  = [0.075, 0.075, 0.075]           # Here: [u1, v1, u2, v2]
+lbUseControlRamping               = true                  # Activate tanh ramping between two consecutive control actions
+lbRampPercentage                  = 0.75                  # percentage of action iterations which are used during ranp up
+
+#---GUST WIND SETUP-------------------------------------------------------------
+lbGustCenter                      = 0.0                   # y-Center of gust
+lbGustRanges                      = 16.0                   # spatial extent of gust
+lbGustFactor                      = 2.00                   # Multiplication factor of gust wind in center wrt initial inlet velocity
+lbGustDuration                    = 2000                  # duration of gust in simulation timesteps
+
+#---GRID PROPERTIES-------------------------------------------------------------
+maxNoCells                        = 2000000
+scratchSize                       = 10.0
+
+reductionFactor                   = 1.28            # initial cell length is multiplied with this factor
+
+maxRfnmntLvl                      = 12
+domainLength                      = 270.0 
+
+#-------------------------------------------------------------------------------
+#---LBM-------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+#---I/O-------------------------------------------------------------------------
+outputDir.0                       = "out_lb/"
+geometryInputFileName.0           = "geometry.toml"
+useNonSpecifiedRestartFile        = true
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+solvertype.0                      = "MAIA_LATTICE_BOLTZMANN"
+solverMethod                      = "MAIA_LATTICE_BGKC"
+noDistributions                   = 9
+
+densityFluctuations               = false
+interfaceMethod                   = "FILIPPOVA"
+multiBCTreatment                  = "I-W-P"
+
+inOutTest                         = "perpOp"
+interpolationDistMethod           = "STD"  # analytic wall distance calculation
+gridCutTest                       = "SAT"
+interfaceCellSize                 = 10.0 # ratio of number interface cells to overall cells
+
+#---FLOW INITIALIZATION---------------------------------------------------------
+#initMethod                        = "LB_LAMINAR_INIT_PX"
+initMethod                        = "LB_LAMINAR_CYLINDER_INIT"
+
+initVelocityMethod                = "read"
+bndNormalMethod                   = "read"
+initialVelocityVectors            = [
+                                      1.0, 0.0, # negX
+                                      1.0, 0.0, # posX
+                                      1.0, 0.0, # negY
+                                      1.0, 0.0  # posY
+                                    ]
+bndNormalVectors                  = [ 
+                                      -1.0, 0.0, # negX
+                                      1.0, 0.0,  # posX
+                                      0.0,-1.0,  # negY
+                                      0.0, 1.0   # posY
+                                    ]
+
+# ramp viscosity for reasons of stability
+tanhInit                          = false   # switch for asymptotic increase of Re
+initRe                            = 100.0   # initial Re
+initStartTime                     = 0       # global time at which the increase starts (in iterations)
+initTime                          = 2000    # time span for asymptotic increase (>99% of final value) (in iterations)
+
+#---GRID PROPERTIES-------------------------------------------------------------
+noHaloLayers.0                    = 2
+
+#---SRC TERMS-------------------------------------------------------------------
+lbSrcTerms                         = ["LB_SPONGE_EQCONST"]
+
+#---sponge
+spongeLayerThickness               = 10.0 # thickness in STL units (0 means off)
+spongeThicknessFactor              = [ 0.2,1.0, 0.2,0.2 ] # thickness factor per direction [negX, posX, negY, posY, negZ, posZ]
+spongeSigma                        = 0.2 # trg sigma at bndry
+spongeBeta                         = 2.0 # exponent of sigma function
+spongeTrgRho                       = 1.0
+spongeTrgU                         = [ 1.0, 0.0, 0.0 ] # relative to Ma
+
+#---FORCE LOG-------------------------------------------------------------------
+calculateWallForces               = true
+forceFileName                     = "force.log"
+calculateWallForcesInterval       = 50
+
+#-------------------------------------------------------------------------------
+#---POST------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+restartFile.1                     = false
+#---I/O-------------------------------------------------------------------------
+geometryInputFileName.1           = "geometry.toml"
+solutionOffset.1                  = 100000000000000000 # Here, never !
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+solvertype.1                      = "MAIA_POST_DATA"
+postProcessing                    = false
+noPostProcessing                  = 1
+postProcessingSolverIds           = [0]
+postProcessingType_0              = "POSTPROCESSING_LB"
+postProcessingOps_0               = ["PP_PROBE_POINT_IN"]
+
+#--point sampling
+pp_probePath                      = "probe/"
+pp_probeCoordinates               = [ -1.0, 0.0]
+pp_probeDerivatives               = true
+
+#---GRID PROPERTIES-------------------------------------------------------------
+noHaloLayers.1                    = 1

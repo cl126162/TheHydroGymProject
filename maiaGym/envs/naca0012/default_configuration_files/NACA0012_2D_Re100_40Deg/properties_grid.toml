@@ -1,0 +1,46 @@
+#---APPLICATION SETINGS---------------------------------------------------------
+flowSolver                        = false
+gridGenerator                     = true
+
+#---APPLICATION ENVIRONMENT-----------------------------------------------------
+outputDir                         = "out_lb/"
+geometryInputFileName             = "geometry.toml"
+gridOutputFileName                = "grid.Netcdf"
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+nDim                              = 2
+noSolvers                         = 2
+multiSolverGrid                   = true
+
+#---GRID PROPERTIES-------------------------------------------------------------
+scratchSize                       = 20.0
+maxNoCells                        = 40000000    # maximum number of cells per process
+
+reductionFactor                   = 1.28       # factor by which level-0 cell length is multiplied
+noHaloLayers                      = 2
+partitionCellOffspringThreshold   = 500000
+
+minLevel                          =  9        # refine the grid to minLevel serial
+maxUniformRefinementLevel         =  9        # refine parallelto maxUniformRefinementLevel
+maxBoundaryRfnLvl                 =  12        # Boundary refinement to maxBoundaryRfnLevel
+maxRfnmntLvl                      =  12        # Local refinements to maxRfnmntLvl
+
+localRfnMethod                    = 1         # 0 no, 1 patch only, 2 boundary only, 3 both
+
+#-boundary refinment
+localBndRfnMethod                 = 2         # 0: default (level0), 1: based on local 2: based on localBndRfnDistance
+localBndRfnDistance               = 0.5       # d_bndry/D= 5/sqrt(Re)
+localBndRfnMinLvlDiff             = [3]       # difference between maxBoundaryRfnLvl and lowest target refinment level
+
+localRfnBoundaryIds               = [4]       # Ids of boundaries that are refined
+localRfnLvlDiff                   = [0]       # difference between maxBoundaryRfnLvl and bndry-Id
+smoothDistance                    = [10]      # number of cells used at least
+localMinBoundaryThreshold         = [10]      # 
+
+#-patch refinment
+localRfnLvlMethods       = "B-B-B"
+localRfnLevelProperties  = [
+  -10.0,-15.0, 40.0,15.0,
+  -7.5,-10.0, 30.0,10.0,
+  -5.0,-5.0, 20.0,5.0,
+]

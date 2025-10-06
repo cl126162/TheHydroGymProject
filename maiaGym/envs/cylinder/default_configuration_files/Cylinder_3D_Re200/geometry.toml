@@ -1,0 +1,29 @@
+noSegments       = 7
+inOutSegmentsIds = [0,1,2,3]
+
+filename.0 = "stl/negX.stl"
+filename.1 = "stl/posX.stl"
+filename.2 = "stl/negY.stl"
+filename.3 = "stl/posY.stl"
+filename.4 = "stl/negZ.stl"
+filename.5 = "stl/posZ.stl"
+filename.6 = "stl/cylinder.stl"
+
+"body_segments.in" = 0
+"body_segments.out" = 1
+"body_segments.bottom" = 2
+"body_segments.top" = 3
+"body_segments.front" = 4
+"body_segments.rear" = 5
+"body_segments.cylinder" = 6
+
+BC.0 = 1000
+BC.1 = 4000
+BC.2 = 4000
+BC.3 = 4000
+BC.4 = 0
+BC.5 = 0
+BC.6 = 2000
+
+noPeriodicSegments = 2
+periodicSegmentsIds = [4,5]

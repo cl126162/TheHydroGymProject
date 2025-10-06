@@ -1,0 +1,73 @@
+env:
+  agent: PPO
+  max_episode_steps: 200
+  max_episode_steps_validation: 200
+  num_episodes: 500
+  seed: 42
+  output_dir: ./results/${env.agent}/${maia.environment}/Re_${maia.Re}/
+  configuration_name: ${env.agent}_${maia.environment}_Re-${maia.Re}_LR-${optim.actor_lr}_Subs-${maia.num_sim_substeps_per_actuation}_Seed-${env.seed}
+  data_path: ${env.output_dir}/${env.configuration_name}/
+  config_path: ./maiaGym/envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/config_cylinder_ppo.yaml
+collector:
+  total_frames: 200000
+  init_random_frames: 0
+  frames_per_batch: 400
+  init_env_steps: 0
+  device: cpu
+  env_per_collector: 1
+  reset_at_each_iter: false
+replay_buffer:
+  size: ${collector.frames_per_batch}
+  prb: 0
+  scratch_dir: ${env.output_dir}/${env.configuration_name}/data
+optim:
+  utd_ratio: 1.0
+  gamma: 0.99
+  loss_function: l2
+  actor_lr: 0.0003
+  critic_lr: 0.0003
+  weight_decay: 0.0
+  batch_size: 25
+  adam_eps: 1.0e-08
+  anneal_lr: true
+  ppo_epochs: 25
+  use_gae: true
+  gae_lambda: 0.97
+  average_gae: false
+  clip_epsilon: 0.1
+  anneal_clip_epsilon: false
+  critic_coef: 0.2
+  entropy_coef: 0.01
+  loss_critic_type: l2
+  normalize_advantage: true
+network:
+  hidden_sizes:
+  - 256
+  - 256
+  activation: mish
+  use_lstm: false
+  default_policy_scale: 1.0
+  scale_lb: 0.1
+  device: cpu
+  ckpt_dir: ./checkpoints
+logger:
+  backend: tensorboard
+  mode: online
+  eval_iter: 800
+maia:
+  environment: rotary_cylinder
+  grid_file: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/properties_grid.toml
+  grid_file_path: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/grid.Netcdf
+  runtime_property_file: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/properties_run.toml
+  geometry_file: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/geometry.toml
+  stl_path: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/stl
+  restart: envs/cylinder/default_configuration_files/RotaryCylinder_2D_Re200/restart_.Netcdf
+  Re: 200
+  observation_type:
+  - u
+  - v
+  num_sim_substeps_per_actuation: 87
+  num_action_inputs: 1
+  max_control: 0.5
+  omega: 0.2
+  render: false

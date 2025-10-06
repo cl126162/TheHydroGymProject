@@ -1,0 +1,15 @@
+# Core Dependencies
+mpi4py
+gym
+numpy
+toml
+omegaconf
+einops
+tqdm
+
+# Optional Dependencies for TorchRL
+torch
+torchrl
+tensordict
+tensorboard
+matplotlib

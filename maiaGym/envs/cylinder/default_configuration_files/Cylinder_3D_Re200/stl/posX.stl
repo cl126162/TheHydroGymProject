@@ -1,0 +1,156 @@
+solid posX
+facet normal 1 0 0
+  outer loop
+    vertex 24 -8 -2
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -8 -1.998401444325282e-15
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -8 -1.998401444325282e-15
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -8 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 8 -1.998401444325282e-15
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 8 -2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 8 2
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 8 -1.998401444325282e-15
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -4.8 -2
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -8 -2
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 -8 2
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -4.8 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 8 -2
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 4.800000000000008 -2
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 4.800000000000008 2
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 8 2
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 1.599999999999998 2
+    vertex 24 3.200000000000005 0
+    vertex 24 4.800000000000008 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 4.800000000000008 -2
+    vertex 24 3.200000000000005 0
+    vertex 24 1.599999999999998 -2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 1.599999999999998 2
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 3.200000000000005 0
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 3.200000000000005 0
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 1.599999999999998 -2
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 -1.600000000000008 2
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 1.599999999999998 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 1.599999999999998 -2
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 -1.600000000000008 -2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 -1.600000000000008 2
+  endloop
+endfacet
+facet normal 1 0 -0
+  outer loop
+    vertex 24 -1.600000000000008 -2
+    vertex 24 -3.552713678800501e-15 0
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 -4.8 2
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+    vertex 24 -1.600000000000008 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -1.600000000000008 -2
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+    vertex 24 -4.8 -2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -4.8 2
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+  endloop
+endfacet
+facet normal 1 0 -0
+  outer loop
+    vertex 24 4.800000000000008 -2
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 3.200000000000005 0
+  endloop
+endfacet
+facet normal 1 -0 0
+  outer loop
+    vertex 24 3.200000000000005 0
+    vertex 24 6.030952380952382 -2.220446049250313e-16
+    vertex 24 4.800000000000008 2
+  endloop
+endfacet
+facet normal 1 0 0
+  outer loop
+    vertex 24 -3.200000000000004 -2.220446049250313e-16
+    vertex 24 -6.030952380952382 -2.220446049250313e-16
+    vertex 24 -4.8 -2
+  endloop
+endfacet
+endsolid posX

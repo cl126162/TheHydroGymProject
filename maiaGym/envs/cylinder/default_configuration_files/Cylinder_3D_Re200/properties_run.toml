@@ -1,0 +1,142 @@
+#-------------------------------------------------------------------------------
+#---GENERAL---------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+#---APPLICATION SETTINGS--------------------------------------------------------
+flowSolver                        = true
+gridGenerator                     = false
+restartFile.default               = true
+initRestart                       = false
+
+calcBcResidual = false #true
+
+#---FLOW VARIABLES--------------------------------------------------------------
+referenceLength                   = 1.0  # Cylinder diameter
+Ma                                = 0.2
+Re                                = 200
+
+periodicCartesianDir=[0, 0, 1]
+
+#---I/O-------------------------------------------------------------------------
+outputDir.default                 = "out_lb/"
+geometryInputFileName.default     = "geometry.toml"
+gridInputFileName                 = "grid.Netcdf"
+gridOutputFileName                = "grid.Netcdf"
+outputInitialCondition            = true #false
+
+#---BALANCING & WEIGHTING-------------------------------------------------------
+partitionCellOffspringThreshold   = 200000
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+nDim                              = 3
+noSolvers                         = 2
+multiSolverGrid                   = true
+
+executionRecipe                   = "RECIPE_BASE"
+solvertype.default                = "MAIA_UNIFIED"
+
+#---SOLUTION PROPERTIES---------------------------------------------------------
+restartTimeStep                   = 120000
+timeSteps                         = 500000
+solutionInterval.default          = 1000
+solutionInterval.1                = 20000
+restartInterval                   = 10000     # Here, means never
+residualInterval                  = 64000000  # Here, means never
+
+#---GRID PROPERTIES-------------------------------------------------------------
+maxNoCells                        = 20000000
+scratchSize                       = 10.0
+
+reductionFactor                   = 1.0            # initial cell length is multiplied with this factor
+
+maxRfnmntLvl                      = 13
+#-------------------------------------------------------------------------------
+#---LBM-------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+#---I/O-------------------------------------------------------------------------
+outputDir.0                       = "out_lb/"
+geometryInputFileName.0           = "geometry.toml"
+useNonSpecifiedRestartFile        = true
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+solvertype.0                      = "MAIA_LATTICE_BOLTZMANN"
+solverMethod                      = "MAIA_LATTICE_CUMULANT"
+noDistributions                   = 27
+
+densityFluctuations               = false
+interfaceMethod                   = "FILIPPOVA"
+multiBCTreatment                  = "I-W-P"
+
+inOutTest                         = "perpOp"
+interpolationDistMethod           = "STD"  # analytic wall distance calculation
+gridCutTest                       = "SAT"
+interfaceCellSize                 = 10.0 # ratio of number interface cells to overall cells
+
+#---FLOW INITIALIZATION---------------------------------------------------------
+initMethod                        = "LB_LAMINAR_CYLINDER_INIT"
+
+initVelocityMethod              = "fromSTL"
+bndNormalMethod                 = "fromSTL"
+
+# ramp viscosity for reasons of stability
+tanhInit                          = false   # switch for asymptotic increase of Re
+initRe                            = 100.0   # initial Re
+initStartTime                     = 0       # global time at which the increase starts (in iterations)
+initTime                          = 2000    # time span for asymptotic increase (>99% of final value) (in iterations)
+
+#---GRID PROPERTIES-------------------------------------------------------------
+noHaloLayers.0                    = 2
+haloMode                          = 2
+
+#---SRC TERMS-------------------------------------------------------------------
+#lbSrcTerms                         = ["LB_SPONGE_EQCONST", "LB_SRC_MASS"]
+
+#---sponge
+#spongeLayerThickness               = 10.0 # thickness in STL units (0 means off)
+#spongeThicknessFactor              = [ 0.2,1.0, 0.2,0.2 ] # thickness factor per direction [negX, posX, negY, posY, negZ, posZ]
+#spongeSigma                        = 0.2 # trg sigma at bndry
+#spongeBeta                         = 2.0 # exponent of sigma function
+#spongeTrgRho                       = 1.0
+#spongeTrgU                         = [ 1.0, 0.0, 0.0 ] # relative to Ma
+
+#---mass src
+#massSrcNo                          = 2
+#massSrcStartTimeStep               = 100
+#massSrcPosition                    = [
+#  0.0,  1.00,
+#  0.0, -1.00,
+#]
+#massSrcAmplitude                   = [ # given in rho_0*Ma*cs/L^ndim
+#  0.0, 0.0,
+#  0.0, 0.0,
+#]
+
+#---FORCE LOG-------------------------------------------------------------------
+calculateWallForces               = true
+forceFileName                     = "force.log"
+calculateWallForcesInterval       = 100
+
+#-------------------------------------------------------------------------------
+#---POST------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+restartFile.1                     = false
+#---I/O-------------------------------------------------------------------------
+solutionOffset.1                  = 100000000000000000 # Here, never !
+geometryInputFileName.1           = "geometry.toml"
+
+#---NUMERICAL PROPERTIES--------------------------------------------------------
+solvertype.1                      = "MAIA_POST_DATA"
+postProcessing                    = false
+noPostProcessing                  = 1
+postProcessingSolverIds           = [0]
+postProcessingType_0              = "POSTPROCESSING_LB"
+postProcessingOps_0               = ["PP_PROBE_POINT_IN"]
+
+#--point sampling
+pp_probePath                      = "probe/"
+pp_probeCoordinates               = [ -1.0, 0.0]
+
+#---GRID PROPERTIES-------------------------------------------------------------
+noHaloLayers.1                    = 1
