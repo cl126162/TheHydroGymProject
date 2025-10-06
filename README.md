@@ -140,7 +140,7 @@ This work builds on the m-AIA solver continuously developed at RWTH Aachen Unive
 
 ## Related Projects
 
-- [HydroGym](https://github.com/cl126162/TheHydroGymProject)
+- [HydroGym](https://cl126162.github.io/TheHydroGymProject/)
 - [HydroGym JAX Backend](https://github.com/dynamicslab/hydrogym/tree/sm-jax-env)
 - [HydroGym Firedrake Backend](https://github.com/dynamicslab/hydrogym)
 ```
