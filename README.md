@@ -1,6 +1,6 @@
 # m-AIA meets HydroGym
 
-[![HydroGym Environment Suite](assets/figure2_GitHub.svg)](https://github.com/cl126162/TheHydroGymProject)
+[![HydroGym Environment Suite](assets/figure2_GitHub.png)](https://cl126162.github.io/TheHydroGymProject/)
 
 
 A high-performance lattice Boltzmann method (LBM) solver backend for the HydroGym reinforcement learning platform, providing GPU-accelerated computational fluid dynamics environments for flow control research.
@@ -23,7 +23,7 @@ This repository contains the m-AIA implementation of HydroGym environments, enab
 
 ## Installation
 
-__IMPORTANT NOTE: This package is an incomplete official public release to demonstrate the HydroGym's ease-of-use and versatility. The full m-AIA based HydroGym backend including the related m-AIA HPC CFD solver will released upon publishment of the coresponding paper.__
+__IMPORTANT NOTE: This package is an incomplete official public release to demonstrate HydroGym's ease-of-use and versatility. The full m-AIA based HydroGym backend including the related m-AIA HPC CFD solver will released upon publishment of the coresponding paper.__
 
 ### From Source
 
