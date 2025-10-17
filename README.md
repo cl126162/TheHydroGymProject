@@ -42,7 +42,7 @@ For containerized deployment:
 
 ```bash
 # Build GPU version
-docker build -t hydrogym-maia-cpu .
+docker build -t hydrogym-maia-gpu .
 
 # or CPU version locally
 docker build -t hydrogym-maia-cpu .
